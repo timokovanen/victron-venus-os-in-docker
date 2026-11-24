@@ -270,8 +270,8 @@ setup_venus_device() {
 
     # GNU stat returns decimal major and minor device numbers with these
     # format specifiers. For ttyUSB0 this normally produces 188 and 0.
-    major=$(stat -c '%Hr' "$dev" 2>/dev/null || true)
-    minor=$(stat -c '%Lr' "$dev" 2>/dev/null || true)
+    major=$(udevadm info -q property -n "$dev" | sed -n 's/^MAJOR=//p')
+    minor=$(udevadm info -q property -n "$dev" | sed -n 's/^MINOR=//p')
 
     if [ -z "$major" ] || [ -z "$minor" ]; then
         echo "[entrypoint] WARNING: Cannot determine major/minor numbers for $dev"
